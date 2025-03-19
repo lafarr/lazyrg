@@ -24,10 +24,6 @@ var (
 	highlight = lipgloss.AdaptiveColor{Light: "#874BFD", Dark: "#7D56F4"}
 	special   = lipgloss.AdaptiveColor{Light: "#43BF6D", Dark: "#73F59F"}
 
-	appStyle = lipgloss.NewStyle().
-			Padding(1, 2).
-			Background(lipgloss.AdaptiveColor{Light: "#FFFFFF", Dark: "#1A1A1A"})
-
 	titleStyle = lipgloss.NewStyle().
 			Foreground(lipgloss.Color("#FFFFFF")).
 			Background(highlight).
@@ -44,23 +40,6 @@ var (
 	statusMessageStyle = lipgloss.NewStyle().
 				Foreground(lipgloss.Color("#FFFFFF")).
 				Render
-
-	infoStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#FFFFFF")).
-			Background(special).
-			Padding(0, 1).
-			MarginRight(1)
-
-	errorStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color("#FFFFFF")).
-			Background(lipgloss.Color("#FF616B")).
-			Padding(0, 1).
-			MarginRight(1)
-
-	tabListStyle = lipgloss.NewStyle().
-			Padding(0).
-			MarginTop(1).
-			MarginBottom(1)
 
 	activeTabStyle = lipgloss.NewStyle().
 			Foreground(lipgloss.Color("#FFFFFF")).
@@ -370,7 +349,9 @@ func loadFile(filepath string, lineNum string) tea.Cmd {
 	return func() tea.Msg {
 		// Try using bat with line highlighting
 		lineNumInt := 0
-		fmt.Sscanf(lineNum, "%d", &lineNumInt)
+		if _, err := fmt.Sscanf(lineNum, "%d", &lineNumInt); err != nil {
+			return fileLoadedMsg{err: fmt.Errorf("invalid line number: %s", lineNum)}
+		}
 
 		cmd := exec.Command("bat", "--color=always", "--style=full", "--highlight-line", lineNum, filepath)
 		output, err := cmd.CombinedOutput()
