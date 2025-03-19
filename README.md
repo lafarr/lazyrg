@@ -21,7 +21,7 @@ A terminal user interface for ripgrep, making it easier to search through your c
 ## Installation
 
 ```bash
-go install github.com/lafarr/lazyrg@latest
+go install github.com/lafarr/lazyrg@v1.0.0
 ```
 
 ## Usage
