@@ -43,7 +43,7 @@ lazyrg
 ## Building from Source
 
 ```bash
-git clone https://github.com/yourusername/lazyrg.git
+git clone https://github.com/lafarr/lazyrg.git
 cd lazyrg
 go build
 ```
